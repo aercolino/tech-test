@@ -18,25 +18,25 @@
 ```
 - Edited /etc/hosts: 192.168.10.10  skybet.challenge
 - Edited Homestead.yaml
-
+```
     sites:
         - map: skybet.challenge
           to: /home/vagrant/Code/Project/public
 
     $ vagrant up
-
+```
 - Extremely slow download... 30 minutes ETC
 - Looked for support in Google
 - Found http://stackoverflow.com/a/31246953/250838
 - Issued
-
+```
     $ (CTRL+C)
     $ rm ~/.vagrant.d/tmp/*
     $ vagrant up
-    
+```
 - Download still slow, but ETC halved.
 - First vagrant up ends with this error
-
+```
     ...
     ==> default: Setting hostname...
     There was an error while executing `VBoxManage`, a CLI used by Vagrant
@@ -47,13 +47,13 @@
     Stderr: VBoxManage: error: Could not find a registered machine with UUID {99c6a563-deea-4673-81e3-860a818a6d72}
     VBoxManage: error: Details: code VBOX_E_OBJECT_NOT_FOUND (0x80bb0001), component VirtualBoxWrap, interface IVirtualBox, callee nsISupports
     VBoxManage: error: Context: "FindMachine(Bstr(VMNameOrUuid).raw(), machine.asOutParam())" at line 2719 of file VBoxManageInfo.cpp
-
+```
 - Issued again
-
+```
     $ vagrant up
-
+```
 - Second vagrant up ends with this error
-
+```
     ...
     ==> default: Configuring and enabling network interfaces...
     The provider for this Vagrant-managed machine is reporting that it
@@ -63,25 +63,25 @@
     that the machine is in the state that you expect. If you continue to
     get this error message, please view the documentation for the provider
     you're using.
-
+```
 - Issued
-
+```
     $ vagrant status
     Current machine states:
 
     default                   not created (virtualbox)
-
+```
 - Getting tired of these errors :D
 - Looked through the process with more attention.
 - Found that I had stated 'skybet.dev' in the hosts file and 'skyebet.challenge' in the yaml file. Changed the latter to '.dev'.
 - Issued
-
+```
     $ vagrant up
-
+```
 - Nothing changed, I got the same result as the first vagrant up.
 - Decided to go with the standard Laravel/Homestead guide at https://laravel.com/docs/4.2/homestead.
 - Issued
-
+```
     $ mv ./server ./hi-server
     $ vagrant box add laravel/homestead
     ==> box: Loading metadata for box 'laravel/homestead'
@@ -101,10 +101,10 @@
     Name: laravel/homestead
     Provider: virtualbox
     Version: 0.4.1
-
+```
 - Decided to keep the one I have.
 - Issued
-    
+```
     $ git clone https://github.com/laravel/homestead.git h-server
     Cloning into 'h-server'...
     remote: Counting objects: 1454, done.
@@ -116,9 +116,9 @@
     $ cd h-server
     $ bash init.sh
     Homestead initialized!
-
+```
 - Edited ~/.homestead/Homestead.yaml like this
-
+```
     ---
     ip: "192.168.10.10"
     memory: 2048
@@ -140,21 +140,21 @@
 
     databases:
         - homestead
-
+```
 - Edited /etc/hosts like this
-
+```
     ...
     192.168.10.10 skybet.dev
-
+```
 - Issued
-
+```
     $ cd ~/dev/interview/javascript/skybet/h-server
     $ vagrant up
-
+```
 - Yet again the same problem as the first vagrant up with the Homestead Improved setup.
 - Had a hunch that it could be a timeout issue.
 - Issued 
-
+```
     $ vagrant up --no-destroy-on-error
     Bringing machine 'default' up with 'virtualbox' provider...
     ==> default: Importing base box 'laravel/homestead'...
@@ -248,11 +248,11 @@
 
      * Documentation:  https://help.ubuntu.com/
     vagrant@homestead:~$
-
+```
 - Hurrah!!
 - Created a phpinfo file at ~/dev/interview/javascript/skybet/Code/Laravel/public/index.php.
 - Opened browser at http://skybet.dev and it works !!!
-
+```
     System  Linux homestead 3.19.0-25-generic #26~14.04.1-Ubuntu SMP Fri Jul 24 21:16:20 UTC 2015 x86_64
-
+```
 - Done.
