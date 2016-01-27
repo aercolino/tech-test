@@ -7,7 +7,7 @@
 - Also installing the latest version of Vagrant.
 - Installed Vagrant 1.8.1.
 - Started following guide.
-
+```
     $ git clone https://github.com/swader/homestead_improved ./server
     $ cd server
     $ mkdir Project
@@ -15,7 +15,7 @@
     $ mkdir public
     $ cd ../..
     $ bin/folderfix.sh
-
+```
 - Edited /etc/hosts: 192.168.10.10  skybet.challenge
 - Edited Homestead.yaml
 
