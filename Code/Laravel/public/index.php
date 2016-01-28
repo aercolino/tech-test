@@ -1,10 +1,8 @@
 <?php
 
-// die (phpinfo());
-
 error_reporting( E_ALL );
 
-require_once( '../../config.php' );
+require_once( dirname(__FILE__, 3) . '/src/config.php' );
 
 global $url_string, $controller, $action;
 try
@@ -13,12 +11,12 @@ try
 }
 catch (Exception $e)
 {
-
-    redirect_to('no-access.php');
+    die(d_($e));
+    redirect_to('no-access.html');
 }
 
-die(d_($type));
-check_login($type);
+d_([$controller, $action, $type]);
+// check_login($type);
 unset($type);
 
 // include CONFIG::get('ABSPATH') . 'app/c/init.php';
