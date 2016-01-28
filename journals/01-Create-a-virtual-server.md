@@ -1,4 +1,7 @@
-### Journal
+### Create a virtual server
+
+It should make things much easier for fellow engineers at Sky Bet to validate my work.
+
 
 - Searched Google for xampp vs vagrant vs docker.
 - Found [this page](http://www.sitepoint.com/quick-tip-get-homestead-vagrant-vm-running/).

@@ -1,0 +1,12 @@
+{
+    "name": "aercolino/skybet",
+    "require-dev": {
+        "phpunit/phpunit": "^5.1"
+    },
+    "authors": [
+        {
+            "name": "Andrea Ercolino",
+            "email": "cappuccino.e.cornetto@gmail.com"
+        }
+    ]
+}
