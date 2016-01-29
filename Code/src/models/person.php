@@ -19,5 +19,8 @@ class Person {
         return $this->data;
     }
 
-    
+    public function __toString() {
+        $result = "{$this->data['firstname']} {$this->data['surname']}";
+        return $result;
+    }
 }

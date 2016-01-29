@@ -6,7 +6,7 @@ require_once(CONFIG::get('ABSPATH') . '/src/models/person.php');
 class PersonTest extends PHPUnit_Framework_TestCase 
 {
 
-    public function testAPersonObjectIsCorrectlyCreated()
+    public function testAPersonObjectIsCreated()
     {
         $data = array(
             'this' => 'is',
@@ -19,6 +19,16 @@ class PersonTest extends PHPUnit_Framework_TestCase
             'firstname' => 'Donald',
             'surname' => 'Duck',
         ));
+    }
+
+    public function testAPersonIsStrigified()
+    {
+        $data = array(
+            'firstname' => 'Donald',
+            'surname' => 'Duck',
+        );
+        $person = new Person($data);
+        $this->assertEquals("$person", 'Donald Duck');
     }
 
     
