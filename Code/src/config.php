@@ -4,7 +4,8 @@ require_once 'models/config.php';
 
 try
 {
-    CONFIG::$ENV = 'development';
+    $APPENV = getenv('APPENV');
+    CONFIG::$ENV = $APPENV != '' ? $APPENV : 'development';
     CONFIG::$APP = 'default';
     CONFIG::load();
 }

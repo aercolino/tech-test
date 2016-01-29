@@ -15,7 +15,7 @@ catch (Exception $e)
     redirect_to('no-access.html');
 }
 
-d_([$controller, $action, $type]);
+d_([CONFIG::$ENV, $controller, $action, $type]);
 // check_login($type);
 unset($type);
 
