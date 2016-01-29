@@ -15,7 +15,7 @@ if ($errors) {
 
 $stored_people = Storage::read() ?? [];
 if (count($stored_people)) {
-    $display['stored_people'] = array_map(function ($item) { return "$item"; }, $stored_people);
+    $display['stored_people'] = array_map(function ($item) { return htmlspecialchars("$item"); }, $stored_people);
     $display['people'] = array_map(function ($item) { return $item->toHash(); }, $stored_people);
 }
 else {
