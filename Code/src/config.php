@@ -1,6 +1,6 @@
 <?php
 
-require_once 'models/config.model.php';
+require_once 'models/config.php';
 
 try
 {
