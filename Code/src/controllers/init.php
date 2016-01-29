@@ -1,6 +1,6 @@
 <?php
 
-$prefix = CONFIG::get('ABSPATH') . '/src/controllers/';
+$prefix = CONFIG::get('ABSPATH') . '/src/controllers';
 
 $controller_init = "$prefix/$controller/init.php";
 if (file_exists( $controller_init )) {

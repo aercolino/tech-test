@@ -10,13 +10,14 @@ function isActionOfKind( $controller, $action, $kind ) {
 function controller_action( $url_string )
 {
     $matches = ['', $url_string];
-    $valid_url = preg_match('@^/index\.php(?:\?(.+))?$@', $matches[1], $matches);
+    $valid_url = preg_match('@^/index\.php(?:\?(.+))?$@', $url_string, $matches);
     if (! $valid_url)
     {
         throw new Exception('Expected a valid URL');
     }
+    $query_string = $matches[1] ?? '';
 
-    $explicit_controller = preg_match('@\bcontroller=([\w-]+)@', $matches[1] ?? '', $matches);
+    $explicit_controller = preg_match('@\bcontroller=([\w-]+)@', $query_string, $matches);
     if ($explicit_controller) {
         $controller = $matches[ 1 ];
     }
@@ -25,7 +26,7 @@ function controller_action( $url_string )
         $controller = 'index';
     }
 
-    $explicit_action = preg_match('@\baction=([\w-]+)@', $matches[1] ?? '', $matches);
+    $explicit_action = preg_match('@\baction=([\w-]+)@', $query_string, $matches);
     if ($explicit_action) {
         $action = $matches[ 1 ];
     }
