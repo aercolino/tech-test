@@ -13,6 +13,6 @@ class StorageTest extends PHPUnit_Framework_TestCase
         );
         Storage::write($data);
         $read = Storage::read();
-        $this->assertEquals($data, $read);
+        $this->assertEquals($read, $data);  // Actual, Expected <-- alphabetic order
     }
 }
