@@ -9,26 +9,27 @@ function isActionOfKind( $controller, $action, $kind ) {
 
 function controller_action( $url_string )
 {
-    $matches = ['', $url_string];
-    $valid_url = preg_match('@^/index\.php(?:\?(.+))?$@', $url_string, $matches);
+    $valid_url = preg_match('@^/index\.php(/.+)?$@', $url_string, $matches);
     if (! $valid_url)
     {
         throw new Exception('Expected a valid URL');
     }
-    $query_string = $matches[1] ?? '';
+    $controller_action = $matches[1] ?? '';
 
-    $explicit_controller = preg_match('@\bcontroller=([\w-]+)@', $query_string, $matches);
+    $explicit_controller = preg_match('@^/([\w-]+)@', $controller_action, $matches);
     if ($explicit_controller) {
         $controller = $matches[ 1 ];
+        $controller_action = substr($controller_action, strlen($controller) + 1);
     }
     else
     {
         $controller = 'index';
     }
 
-    $explicit_action = preg_match('@\baction=([\w-]+)@', $query_string, $matches);
+    $explicit_action = preg_match('@^/([\w-]+)@', $controller_action, $matches);
     if ($explicit_action) {
         $action = $matches[ 1 ];
+        $controller_action = substr($controller_action, strlen($action) + 1);
     }
     else
     {
@@ -676,23 +677,37 @@ function hash2params( $hash ) {
 }
 
 
-function params2hash( $params ) {
-    $test = strstr( $params, '?' );
-    $params = $test === false ? $params : ($test ? substr( $test, 1 ) : $test);
-    $aux = array();
-    if (strpos( $params, '&' ) > 0) {
-        $pairs = explode( '&', $params );
-        foreach( $pairs as $pair ) {
-            $aux2 = explode( '=', $pair );
-            $aux[ urldecode( $aux2[ 0 ] ) ] = urldecode( $aux2[ 1 ] );
-        }
+function params2hash( $url ) {
+    $params = url_split($url)['params'];
+    if (! $params) {
+        return [];
     }
-    else {
-        $aux2 = explode( '=', $params );
-        $aux[ urldecode( $aux2[ 0 ] ) ] = urldecode( $aux2[ 1 ] );
+    $aux = [];
+    $pairs = explode( '&', $params );
+    foreach( $pairs as $pair ) {
+        $aux2 = explode( '=', $pair );
+        $aux[ urldecode( $aux2[ 0 ] ) ] = urldecode( $aux2[ 1 ] ?? '' );
     }
     return $aux;
 }
+
+
+function url_split($url) {
+    $split = preg_split('@\?((?:(?:[^=]+)=(?:[^&]+)&)*(?:[^=]+)=(?:[^#]+))@', $url, null, PREG_SPLIT_DELIM_CAPTURE);
+    $result['path']     = $split[0] ?? '';
+    $result['params']   = $split[1] ?? '';
+    $result['fragment'] = $split[2] ?? '';
+    return $result;
+}
+
+
+function url_join($parts) {
+    $result = $parts['path'] . 
+        ($parts['params']   ? '?' : '') . $parts['params'] . 
+        ($parts['fragment'] ? '#' : '') . $parts['fragment'];
+    return $result;
+}
+
 
 function hrefDownloadAttachment( $path, $filename, $nice_filename, $file_table = '', $file_id = '', $extra = '' ) {
     $params = array(
@@ -720,6 +735,37 @@ function hrefFreeaccessFile( $path, $filename, $nice_filename, $file_table = '',
     return $href;
 }
 
+function merge_params( $url, $hash ) {
+    if (isset($hash['controller'])) {
+        $url = replace_controller($url, $hash['controller']);
+        unset($hash['controller']);
+    }
+    if (isset($hash['action'])) {
+        $url = replace_action($url, $hash['action']);
+        unset($hash['action']);
+    }
+    $params = params2hash($url);
+    $params = array_merge($params, $hash);
+    $params = hash2params($params);
+    $parts = url_split($url);
+    $parts['params'] = $params;
+    $result = url_join($parts);
+    return $result;
+}
+
+
+function replace_controller($url, $controller) {
+    $result = preg_replace('@^/index.php/[\w-]+@', "/index.php/$controller", $url);
+    return $result;
+}
+
+
+function replace_action($url, $action) {
+    $result = preg_replace('@^/index.php/([\w-]+)/[\w-]+@', "/index.php/$1/$action", $url);
+    return $result;
+}
+
+
 function add_params( $url, $hash ) {
     if (strpos( $url, '?' ) === false) {
         return $url.'?'.hash2params( $hash );
@@ -729,13 +775,6 @@ function add_params( $url, $hash ) {
     }
 }
 
-function merge_params( $url, $hash ) {
-    $params = params2hash( $url );
-    $params = array_merge( $params, $hash );
-    $q = strpos( $url, '?' );
-    $url = $q === false ? $url : substr( $url, 0, $q );
-    return add_params( $url, $params );
-}
 
 function unquote($text) {
     return substr($text,1,strlen($text)-2);
