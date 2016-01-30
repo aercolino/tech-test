@@ -13,11 +13,11 @@ try {
     Storage::write($people);    
     $_SESSION['info'] = 'People saved.';              
     
-    redirect_to( '/index.php/people/list' );
+    redirect_to( '/people/list' );
 }
 catch ( Exception $e ) {
     $_SESSION['page_error'] = $e->getMessage();
     $_SESSION['page_post'] = $_POST;
     $_SESSION['errors'] = $errors;
-    redirect_to( '/index.php/people/list' );
+    redirect_to( '/people/list' );
 }

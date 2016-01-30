@@ -9,32 +9,10 @@ function isActionOfKind( $controller, $action, $kind ) {
 
 function controller_action( $url_string )
 {
-    $valid_url = preg_match('@^/index\.php(/.+)?$@', $url_string, $matches);
-    if (! $valid_url)
-    {
-        throw new Exception('Expected a valid URL');
-    }
-    $controller_action = $matches[1] ?? '';
-
-    $explicit_controller = preg_match('@^/([\w-]+)@', $controller_action, $matches);
-    if ($explicit_controller) {
-        $controller = $matches[ 1 ];
-        $controller_action = substr($controller_action, strlen($controller) + 1);
-    }
-    else
-    {
-        $controller = 'index';
-    }
-
-    $explicit_action = preg_match('@^/([\w-]+)@', $controller_action, $matches);
-    if ($explicit_action) {
-        $action = $matches[ 1 ];
-        $controller_action = substr($controller_action, strlen($action) + 1);
-    }
-    else
-    {
-        $action = 'index';
-    }
+    $controller_action = url_split($url_string)['path'];
+    preg_match('@^/.+?\.php(?:/([\w-]+))?(?:/([\w-]+))?@', $controller_action, $matches);
+    $controller = $matches[1] ?? 'index';
+    $action     = $matches[2] ?? 'index';
     
     if (isActionOfKind($controller, $action, array(
         'index/*',
@@ -59,8 +37,6 @@ function controller_action( $url_string )
     {
         $type = 'standard';
     }
-
-
     
     $result = array(
         $controller,
